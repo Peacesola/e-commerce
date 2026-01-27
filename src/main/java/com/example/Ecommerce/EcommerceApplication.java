@@ -19,5 +19,5 @@ public class EcommerceApplication {
         System.out.println(Base64.getEncoder().encodeToString(key));*/
 	}
 //7bPHNxm2dC9iU4YvVflMp2u1hS8
-    //spring.datasource.url=jdbc:mysql://localhost:3306/ecommercedb
+    //
 }
