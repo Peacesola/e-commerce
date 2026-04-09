@@ -18,7 +18,8 @@ public class CreateFoodRequest {
     private BigDecimal price;
     @NotNull(message = "Name is required")
     private String name;
+    private String description;
     private Boolean isAvailable;
     private List<AddOnModel> addOns;
-    private String imageUrl;
+    //private String imageUrl;
 }

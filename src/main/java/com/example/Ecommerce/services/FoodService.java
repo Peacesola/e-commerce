@@ -54,6 +54,7 @@ public class FoodService {
     public FoodModel createFood(CreateFoodRequest createFoodRequest) {
         FoodModel foodModel = FoodModel.builder().price(createFoodRequest.getPrice())
             .name(createFoodRequest.getName())
+            .description(createFoodRequest.getDescription())
             .isAvailable(createFoodRequest.getIsAvailable())
             .addOns(createFoodRequest.getAddOns())
             //.imageUrl(createFoodRequest.getImageUrl())

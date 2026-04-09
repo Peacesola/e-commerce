@@ -25,6 +25,7 @@ public class FoodModel {
     @Column(nullable = false)
     private String name;
     private Boolean isAvailable;
+    private String description;
     //private String imageUrl;
     @OneToMany(
         mappedBy = "food"
