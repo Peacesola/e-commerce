@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,19 +24,21 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        CustomerModel customerModel= customerRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        if(customerRepository.existsByEmail(email)) {
+       Optional<CustomerModel> customerModel= customerRepository.findByEmail(email)/*.orElseThrow(()-> new UsernameNotFoundException("User not found"))*/;
+        if(customerModel.isPresent()) {
+            CustomerModel customer = customerModel.get();
             return new org.springframework.security.core.userdetails.User(
-                customerModel.getEmail(),
-                customerModel.getPassword(),
+                customer.getEmail(),
+                customer.getPassword(),
                 Collections.emptyList()
             );
         }
-        VendorModel vendorModel= vendorRepository.findByRestaurantName(email).orElseThrow(()-> new UsernameNotFoundException("Vendor not found"));
-          if(vendorRepository.existsByRestaurantName(email)) {
+        Optional<VendorModel> vendorModel= vendorRepository.findByEmail(email)/*.orElseThrow(()-> new UsernameNotFoundException("Vendor not found"))*/;
+          if(vendorModel.isPresent()) {
+              VendorModel vendor = vendorModel.get();
               return new org.springframework.security.core.userdetails.User(
-                  vendorModel.getEmail(),
-                  vendorModel.getPassword(),
+                  vendor.getEmail(),
+                  vendor.getPassword(),
                   Collections.emptyList()
               );
           }
