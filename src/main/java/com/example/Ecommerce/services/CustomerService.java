@@ -67,12 +67,10 @@ public class CustomerService {
         manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
         CustomerModel model=customerRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        String token= jwtService.generateToken(model.getEmail());
-
         if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
             throw new BadCredentialsException("Invalid Email or password");
         }
-
+        String token= jwtService.generateToken(model.getEmail());
        return CustomerDto.builder()
             .email(userDetails.getUsername())
             .id(model.getId())
