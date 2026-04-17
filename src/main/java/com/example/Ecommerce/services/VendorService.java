@@ -75,6 +75,8 @@ public class VendorService {
 
         return VendorDto.builder()
             .token(token)
+            .isOpen(model.getIsOpen())
+            .restaurantName(model.getRestaurantName())
             .email(userDetails.getUsername())
             .id(model.getRestaurantId())
             .build();

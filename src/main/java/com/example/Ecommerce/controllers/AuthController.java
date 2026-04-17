@@ -61,12 +61,12 @@ public class AuthController {
     }
 
     @PostMapping("/restaurant/login")
-    public ResponseEntity<Map<String,Object>> loginVendor (@RequestBody @Valid VendorLoginRequest request) {
+    public ResponseEntity<Map<String,Object>> loginRestaurant (@RequestBody @Valid VendorLoginRequest request) {
         VendorDto response = vendorService.loginVendor(request);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
             "status code",HttpStatus.OK.value(),
             "message","Vendor logged in successfully!",
-            "customer", response
+            "restaurant", response
         ));
     }
 
