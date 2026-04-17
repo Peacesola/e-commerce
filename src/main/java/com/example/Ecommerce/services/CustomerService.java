@@ -69,8 +69,8 @@ public class CustomerService {
         CustomerModel model=customerRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         String token= jwtService.generateToken(model.getEmail());
 
-        if(!Objects.equals(request.getPassword(), model.getPassword())){
-            throw new BadCredentialsException("Invalid Email or password ");
+        if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
+            throw new BadCredentialsException("Invalid Email or password");
         }
 
        return CustomerDto.builder()
