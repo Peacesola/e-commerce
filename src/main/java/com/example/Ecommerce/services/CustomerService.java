@@ -1,6 +1,7 @@
 package com.example.Ecommerce.services;
 
 import com.example.Ecommerce.dtos.CustomerDto;
+import com.example.Ecommerce.exceptions.BadCredentialsException;
 import com.example.Ecommerce.exceptions.UserAlreadyExistsException;
 import com.example.Ecommerce.models.CustomerModel;
 import com.example.Ecommerce.repositories.VendorRepository;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CustomerService {
@@ -66,6 +68,10 @@ public class CustomerService {
         UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
         CustomerModel model=customerRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         String token= jwtService.generateToken(model.getEmail());
+
+        if(!Objects.equals(request.getPassword(), model.getPassword())){
+            throw new BadCredentialsException("Invalid Email or password ");
+        }
 
        return CustomerDto.builder()
             .email(userDetails.getUsername())
