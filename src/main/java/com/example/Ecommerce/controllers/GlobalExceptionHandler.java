@@ -49,8 +49,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse>handleBadCredentialsException(BadCredentialsException exception) {
-        ApiResponse errorResponse = new ApiResponse(exception.getMessage(),HttpStatus.BAD_REQUEST.value(), LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        ApiResponse errorResponse = new ApiResponse(exception.getMessage(),HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)
