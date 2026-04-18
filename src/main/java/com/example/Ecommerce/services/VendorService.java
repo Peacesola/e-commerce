@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class VendorService {
@@ -69,24 +70,22 @@ public class VendorService {
     }
 
     public VendorDto loginVendor(VendorLoginRequest request){
-       try{
            manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
            UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
-           VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        /*if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
-            throw new BadCredentialsException("Invalid Email or password");
-        }*/
-           String token= jwtService.generateToken(model.getEmail());
-           return VendorDto.builder()
-               .token(token)
-               .isOpen(model.getIsOpen())
-               .restaurantName(model.getRestaurantName())
-               .email(userDetails.getUsername())
-               .id(model.getRestaurantId())
-               .build();
-       } catch (BadCredentialsException e) {
-          throw new BadCredentialsException("Invalid credentials");
-       }
+        //   VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+           Optional<VendorModel> model= vendorRepository.findByEmail(request.getEmail());
+           if(model.isPresent()){
+               VendorModel model1=model.get();
+               String token= jwtService.generateToken(model1.getEmail());
+               return VendorDto.builder()
+                   .token(token)
+                   .isOpen(model1.getIsOpen())
+                   .restaurantName(model1.getRestaurantName())
+                   .email(userDetails.getUsername())
+                   .id(model1.getRestaurantId())
+                   .build();
+           }
+        throw new BadCredentialsException("Invalid credentials");
     }
 
     public VendorDto loggedInUser() {
