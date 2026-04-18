@@ -70,22 +70,28 @@ public class VendorService {
     }
 
     public VendorDto loginVendor(VendorLoginRequest request){
-           manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-           UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
-        //   VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-           Optional<VendorModel> model= vendorRepository.findByEmail(request.getEmail());
-           if(model.isPresent() && (passwordEncoder.matches(request.getPassword(), model.get().getPassword()))) {
-               VendorModel model1=model.get();
-               String token= jwtService.generateToken(model1.getEmail());
-               return VendorDto.builder()
-                   .token(token)
-                   .isOpen(model1.getIsOpen())
-                   .restaurantName(model1.getRestaurantName())
-                   .email(userDetails.getUsername())
-                   .id(model1.getRestaurantId())
-                   .build();
+          try {
+              manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+              UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
+              //   VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+              Optional<VendorModel> model= vendorRepository.findByEmail(request.getEmail());
+              if(model.isPresent() && (passwordEncoder.matches(request.getPassword(), model.get().getPassword()))) {
+                  VendorModel model1=model.get();
+                  String token= jwtService.generateToken(model1.getEmail());
+                  return VendorDto.builder()
+                      .token(token)
+                      .isOpen(model1.getIsOpen())
+                      .restaurantName(model1.getRestaurantName())
+                      .email(userDetails.getUsername())
+                      .id(model1.getRestaurantId())
+                      .build();
+              }else{
+                  throw new BadCredentialsException("Invalid credentials");
+              }
+          }
+           catch (BadCredentialsException e) {
+               throw new BadCredentialsException("Invalid credentials");
            }
-           throw new BadCredentialsException("Invalid credentials");
     }
 
     public VendorDto loggedInUser() {
