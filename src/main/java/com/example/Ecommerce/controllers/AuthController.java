@@ -3,6 +3,7 @@ package com.example.Ecommerce.controllers;
 
 import com.example.Ecommerce.dtos.CustomerDto;
 import com.example.Ecommerce.dtos.VendorDto;
+import com.example.Ecommerce.exceptions.BadCredentialsException;
 import com.example.Ecommerce.requests.CustomerLoginRequest;
 import com.example.Ecommerce.requests.CustomerRegisterRequest;
 import com.example.Ecommerce.requests.VendorLoginRequest;
@@ -62,12 +63,19 @@ public class AuthController {
 
     @PostMapping("/restaurant/login")
     public ResponseEntity<Map<String,Object>> loginRestaurant (@RequestBody @Valid VendorLoginRequest request) {
-        VendorDto response = vendorService.loginVendor(request);
+       try {
+             VendorDto response = vendorService.loginVendor(request);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
             "status code",HttpStatus.OK.value(),
             "message","Vendor logged in successfully!",
             "restaurant", response
         ));
+       } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "status code",HttpStatus.UNAUTHORIZED.value(),
+                "message","Invalid Credentials"
+            ));
+        }
     }
 
 

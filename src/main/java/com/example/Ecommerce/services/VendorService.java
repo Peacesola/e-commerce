@@ -72,9 +72,9 @@ public class VendorService {
         manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
         VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
+        /*if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
             throw new BadCredentialsException("Invalid Email or password");
-        }
+        }*/
         String token= jwtService.generateToken(model.getEmail());
         return VendorDto.builder()
             .token(token)
