@@ -2,6 +2,7 @@ package com.example.Ecommerce.services;
 
 import com.example.Ecommerce.dtos.CustomerDto;
 import com.example.Ecommerce.dtos.VendorDto;
+import com.example.Ecommerce.exceptions.BadCredentialsException;
 import com.example.Ecommerce.exceptions.ProductNotFoundException;
 import com.example.Ecommerce.exceptions.UserAlreadyExistsException;
 import com.example.Ecommerce.models.CustomerModel;
@@ -16,7 +17,6 @@ import com.example.Ecommerce.responses.VendorResponse;
 import com.example.Ecommerce.security.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,7 +74,7 @@ public class VendorService {
            UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
         //   VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
            Optional<VendorModel> model= vendorRepository.findByEmail(request.getEmail());
-           if(model.isPresent()){
+           if(model.isPresent() && (passwordEncoder.matches(request.getPassword(), model.get().getPassword()))) {
                VendorModel model1=model.get();
                String token= jwtService.generateToken(model1.getEmail());
                return VendorDto.builder()
@@ -85,7 +85,7 @@ public class VendorService {
                    .id(model1.getRestaurantId())
                    .build();
            }
-        throw new BadCredentialsException("Invalid credentials");
+           throw new BadCredentialsException("Invalid credentials");
     }
 
     public VendorDto loggedInUser() {
