@@ -2,7 +2,6 @@ package com.example.Ecommerce.services;
 
 import com.example.Ecommerce.dtos.CustomerDto;
 import com.example.Ecommerce.dtos.VendorDto;
-import com.example.Ecommerce.exceptions.BadCredentialsException;
 import com.example.Ecommerce.exceptions.ProductNotFoundException;
 import com.example.Ecommerce.exceptions.UserAlreadyExistsException;
 import com.example.Ecommerce.models.CustomerModel;
@@ -17,6 +16,7 @@ import com.example.Ecommerce.responses.VendorResponse;
 import com.example.Ecommerce.security.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,20 +69,24 @@ public class VendorService {
     }
 
     public VendorDto loginVendor(VendorLoginRequest request){
-        manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
-        VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+       try{
+           manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+           UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
+           VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         /*if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
             throw new BadCredentialsException("Invalid Email or password");
         }*/
-        String token= jwtService.generateToken(model.getEmail());
-        return VendorDto.builder()
-            .token(token)
-            .isOpen(model.getIsOpen())
-            .restaurantName(model.getRestaurantName())
-            .email(userDetails.getUsername())
-            .id(model.getRestaurantId())
-            .build();
+           String token= jwtService.generateToken(model.getEmail());
+           return VendorDto.builder()
+               .token(token)
+               .isOpen(model.getIsOpen())
+               .restaurantName(model.getRestaurantName())
+               .email(userDetails.getUsername())
+               .id(model.getRestaurantId())
+               .build();
+       } catch (BadCredentialsException e) {
+          throw new BadCredentialsException("Invalid credentials");
+       }
     }
 
     public VendorDto loggedInUser() {
