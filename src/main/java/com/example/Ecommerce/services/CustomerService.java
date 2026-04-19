@@ -80,17 +80,16 @@ public class CustomerService {
     }
 
 
-    public CustomerDto loggedInUser() {
+    public CustomerResponse loggedInUser() {
         Authentication authentication =
             SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
         CustomerModel model= customerRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        return CustomerDto.builder()
+        return CustomerResponse.builder()
             .email(email)
             .id(model.getId())
             .build();
-
     }
 
     public List<CustomerModel> getAllCustomers(){

@@ -88,19 +88,17 @@ public class VendorService {
 
     }
 
-    public VendorDto loggedInUser() {
+    public VendorResponse loggedInUser() {
         Authentication authentication =
             SecurityContextHolder.getContext().getAuthentication();
-
         String email = authentication.getName();
         VendorModel model= vendorRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        return VendorDto.builder()
+        return VendorResponse.builder()
             .email(email)
             .id(model.getRestaurantId())
             .restaurantName(model.getRestaurantName())
             .isOpen(model.getIsOpen())
             .build();
-
     }
 
     public VendorModel getRestaurantById(Long id){

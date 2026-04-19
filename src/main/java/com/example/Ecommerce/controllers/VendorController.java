@@ -9,6 +9,7 @@ import com.example.Ecommerce.requests.CustomerLoginRequest;
 import com.example.Ecommerce.requests.CustomerRegisterRequest;
 import com.example.Ecommerce.requests.VendorLoginRequest;
 import com.example.Ecommerce.requests.VendorRegisterRequest;
+import com.example.Ecommerce.responses.VendorResponse;
 import com.example.Ecommerce.services.VendorService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class VendorController {
 
     @GetMapping("/me")
     public ResponseEntity<Map<String,Object>> vendorMe(){
-        VendorDto response = vendorService.loggedInUser();
+        VendorResponse response = vendorService.loggedInUser();
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
             "status code",HttpStatus.OK.value(),
             "me", response
