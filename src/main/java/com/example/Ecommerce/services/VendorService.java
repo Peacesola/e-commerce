@@ -77,7 +77,6 @@ public class VendorService {
           }
               UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
                  VendorModel model=vendorRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-              //Optional<VendorModel> model= vendorRepository.findByEmail(request.getEmail());
                   String token= jwtService.generateToken(model.getEmail());
                   return VendorDto.builder()
                       .token(token)
@@ -98,6 +97,8 @@ public class VendorService {
         return VendorDto.builder()
             .email(email)
             .id(model.getRestaurantId())
+            .restaurantName(model.getRestaurantName())
+            .isOpen(model.getIsOpen())
             .build();
 
     }

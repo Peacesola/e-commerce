@@ -12,5 +12,4 @@ public class VendorDto {
     private String restaurantName;
     private String email;
     private Boolean isOpen;
-    private String token;
 }

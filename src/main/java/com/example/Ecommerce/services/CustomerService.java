@@ -64,12 +64,13 @@ public class CustomerService {
     }
 
     public CustomerDto loginCustomer(CustomerLoginRequest request){
-        manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        try {
+            manager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));}
+        catch (org.springframework.security.authentication.BadCredentialsException e) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
         UserDetails userDetails= userDetailsService.loadUserByUsername(request.getEmail());
         CustomerModel model=customerRepository.findByEmail(request.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        if (!passwordEncoder.matches(request.getPassword(), model.getPassword())) {
-            throw new BadCredentialsException("Invalid Email or password");
-        }
         String token= jwtService.generateToken(model.getEmail());
        return CustomerDto.builder()
             .email(userDetails.getUsername())
