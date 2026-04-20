@@ -43,13 +43,13 @@ public class VendorController {
             "restaurant", response
         ));//200
     }
-
-    @PostMapping("/restaurantState/{id}/{toggle}")
-    public ResponseEntity<Map<String,Object>> toggleRestaurantState(@PathVariable Long id,@PathVariable Boolean toggle){
-        vendorService.toggleRestaurantState(id,toggle);
+/*/{toggle}*/
+    @PostMapping("/restaurantStatus/{id}")
+    public ResponseEntity<Map<String,Object>> toggleRestaurantState(@PathVariable Long id/*,@PathVariable Boolean toggle*/){
+        Boolean status= vendorService.toggleRestaurantStatus(id/*toggle*/);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
             "message","State updated successfully!",
-            "state",toggle
+            "status",status
         ));
     }//200
 

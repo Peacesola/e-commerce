@@ -109,9 +109,11 @@ public class VendorService {
         return vendorRepository.findAll();
     }
 
-    public void toggleRestaurantState(Long id, Boolean toggle){
+    public Boolean toggleRestaurantStatus(Long id/*, Boolean toggle*/){
        VendorModel restaurant= getRestaurantById(id);
-        restaurant.setIsOpen(toggle);
+       Boolean status= restaurant.getIsOpen();
+        status = !status;
        vendorRepository.save(restaurant);
+       return status;
     }
 }
