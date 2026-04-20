@@ -76,10 +76,12 @@ public class FoodService {
         foodRepository.save(foodModel);
     }
 
-    public void toggleFoodAvailability(Long id, Boolean toggle){
+    public Boolean toggleFoodAvailability(Long id){
         FoodModel food= getFoodById(id);
-        food.setIsAvailable(toggle);
-        foodRepository.save(food);
+        Boolean availability= food.getIsAvailable();
+        food.setIsAvailable(!availability);
+        var savedAvailability= foodRepository.save(food);
+        return savedAvailability.getIsAvailable();
     }
 
 }

@@ -48,13 +48,13 @@ public class FoodController {
     }
 
 
-    @PostMapping("/foodAvailability/{id}/{toggle}")
-    public ResponseEntity<Map<String,Object>> toggleFoodAvailability(@PathVariable Long id,@PathVariable Boolean toggle){
-        foodService.toggleFoodAvailability(id,toggle);
+    @PostMapping("/foodAvailability/{id}")
+    public ResponseEntity<Map<String,Object>> toggleFoodAvailability(@PathVariable Long id){
+        Boolean availability= foodService.toggleFoodAvailability(id);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
             "message","Availability updated successfully!",
             "status code",HttpStatus.OK.value(),
-            "state",toggle
+            "availability",availability
         ));
     }
 
