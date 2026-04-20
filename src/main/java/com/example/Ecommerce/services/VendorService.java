@@ -113,7 +113,7 @@ public class VendorService {
        VendorModel restaurant= getRestaurantById(id);
        Boolean status= restaurant.getIsOpen();
         status = !status;
-       vendorRepository.save(restaurant);
-       return status;
+       var savedStatus= vendorRepository.save(restaurant);
+       return savedStatus.getIsOpen();
     }
 }
