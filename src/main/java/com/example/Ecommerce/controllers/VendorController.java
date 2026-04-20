@@ -48,7 +48,7 @@ public class VendorController {
     public ResponseEntity<Map<String,Object>> toggleRestaurantState(@PathVariable Long id/*,@PathVariable Boolean toggle*/){
         Boolean status= vendorService.toggleRestaurantStatus(id/*toggle*/);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-            "message","State updated successfully!",
+            "message","Status updated successfully!",
             "status",status
         ));
     }//200
