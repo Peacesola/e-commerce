@@ -112,7 +112,7 @@ public class VendorService {
     public Boolean toggleRestaurantStatus(Long id/*, Boolean toggle*/){
        VendorModel restaurant= getRestaurantById(id);
        Boolean status= restaurant.getIsOpen();
-        status = !status;
+        restaurant.setIsOpen(!status);
        var savedStatus= vendorRepository.save(restaurant);
        return savedStatus.getIsOpen();
     }
