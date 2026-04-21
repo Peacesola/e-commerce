@@ -37,11 +37,11 @@ public class AddOnService {
          addOnRepository.save(addOnModel);
     }
 
-    public void removeAddOn(Long foodId, Long addOnId) {
+   /* public void removeAddOn(Long foodId, Long addOnId) {
         FoodModel foodModel= foodService.getFoodById(foodId);
        AddOnModel addOnModel=addOnRepository.findByFoodAndId(foodModel,addOnId)
            .orElseThrow(()->new ProductNotFoundException("Add-on does not exist"));
         addOnRepository.delete(addOnModel);
-    }
+    }*/
 
 }

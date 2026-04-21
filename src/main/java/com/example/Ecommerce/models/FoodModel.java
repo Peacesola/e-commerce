@@ -7,10 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,12 +31,13 @@ public class FoodModel {
     )
     @JsonManagedReference
     private List<ReviewModel> reviews;
-    @OneToMany(
+    /*@OneToMany(
         mappedBy = "food",
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonManagedReference*/
     //private List<AddOnRequest> addOns= new ArrayList<>();
-    private List<Map<String,Object>> addOns= new ArrayList<>();
+    @ElementCollection
+    private Map<String,Integer> addOns= new HashMap<>();
 }

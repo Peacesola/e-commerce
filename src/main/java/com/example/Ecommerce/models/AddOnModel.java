@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 public class AddOnModel {
-    //@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //private Long id;
    // @Column(nullable = false)

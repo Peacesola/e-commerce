@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface AddOnRepository extends JpaRepository<AddOnModel,Long> {
     Optional<AddOnModel> findByName(String name);
     boolean existsByName(String name);
-    Optional<AddOnModel>findByFoodAndId(FoodModel food, Long id);
+    //Optional<AddOnModel>findByFoodAndId(FoodModel food, Long id);
 }

@@ -1,11 +1,10 @@
 package com.example.Ecommerce.requests;
-
-import com.example.Ecommerce.models.AddOnModel;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,6 @@ public class CreateFoodRequest {
     private String name;
     private String description;
     private Boolean isAvailable;
-    private List<Map<String,Object>> addOns= new ArrayList<>();
+    private Map<String,Integer> addOns= new HashMap<>();
     //private String imageUrl;
 }
