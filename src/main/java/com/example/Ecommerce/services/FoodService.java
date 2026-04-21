@@ -54,9 +54,10 @@ public class FoodService {
     public FoodModel createFood(CreateFoodRequest createFoodRequest) {
         FoodModel foodModel = FoodModel.builder().price(createFoodRequest.getPrice())
             .name(createFoodRequest.getName())
+            .price(createFoodRequest.getPrice())
             .description(createFoodRequest.getDescription())
             .isAvailable(createFoodRequest.getIsAvailable())
-            .addOns(createFoodRequest.getAddOns())
+            .addOns(createFoodRequest.getAddOns().isEmpty()?null:createFoodRequest.getAddOns())
             //.imageUrl(createFoodRequest.getImageUrl())
             .build();
         if(foodRepository.existsByName(createFoodRequest.getName())){
