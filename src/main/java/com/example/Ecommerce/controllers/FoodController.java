@@ -5,6 +5,7 @@ import com.example.Ecommerce.models.FoodModel;
 import com.example.Ecommerce.requests.AddOnRequest;
 import com.example.Ecommerce.requests.CreateFoodRequest;
 import com.example.Ecommerce.requests.UpdateFoodRequest;
+import com.example.Ecommerce.responses.FoodResponse;
 import com.example.Ecommerce.services.AddOnService;
 import com.example.Ecommerce.services.CloudinaryService;
 import com.example.Ecommerce.services.FoodService;
@@ -33,12 +34,12 @@ public class FoodController {
 
     @PostMapping("/createFood")
     public ResponseEntity<Map<String,Object>> createFood(@RequestBody @Valid CreateFoodRequest createFoodRequest) {
-        FoodModel foodModel= foodService.createFood(createFoodRequest);
+        FoodResponse response= foodService.createFood(createFoodRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(
             Map.of(
                 "message", "Food created successfully",
                 "status code", HttpStatus.CREATED.value(),
-                "food", foodModel
+                "food", response
             ));
     }
 

@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +22,6 @@ public class CreateFoodRequest {
     private String name;
     private String description;
     private Boolean isAvailable;
-    private List<AddOnModel> addOns;
+    private List<Map<String,Object>> addOns= new ArrayList<>();
     //private String imageUrl;
 }

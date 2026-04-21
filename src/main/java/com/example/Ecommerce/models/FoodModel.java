@@ -1,6 +1,7 @@
 package com.example.Ecommerce.models;
 
 
+import com.example.Ecommerce.requests.AddOnRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,6 +9,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -38,5 +40,6 @@ public class FoodModel {
         orphanRemoval = true
     )
     @JsonManagedReference
-    private List<AddOnModel> addOns= new ArrayList<>();
+    //private List<AddOnRequest> addOns= new ArrayList<>();
+    private List<Map<String,Object>> addOns= new ArrayList<>();
 }

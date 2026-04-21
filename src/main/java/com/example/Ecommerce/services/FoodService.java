@@ -8,6 +8,7 @@ import com.example.Ecommerce.exceptions.ProductAlreadyExistsException;
 import com.example.Ecommerce.exceptions.ProductNotFoundException;
 import com.example.Ecommerce.models.FoodModel;
 import com.example.Ecommerce.repositories.FoodRepository;
+import com.example.Ecommerce.responses.FoodResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,19 +52,27 @@ public class FoodService {
        return result.get("secure_url").toString();
     }
 
-    public FoodModel createFood(CreateFoodRequest createFoodRequest) {
-        FoodModel foodModel = FoodModel.builder().price(createFoodRequest.getPrice())
-            .name(createFoodRequest.getName())
+    public FoodResponse createFood(CreateFoodRequest createFoodRequest) {
+        FoodModel foodModel = FoodModel.builder()
             .price(createFoodRequest.getPrice())
+            .name(createFoodRequest.getName())
             .description(createFoodRequest.getDescription())
             .isAvailable(createFoodRequest.getIsAvailable())
-            .addOns(createFoodRequest.getAddOns().isEmpty()?null:createFoodRequest.getAddOns())
+            .addOns(createFoodRequest.getAddOns())
             //.imageUrl(createFoodRequest.getImageUrl())
             .build();
         if(foodRepository.existsByName(createFoodRequest.getName())){
             throw new ProductAlreadyExistsException("Product already exists");
         }
-         return foodRepository.save(foodModel);
+         FoodModel saved= foodRepository.save(foodModel);
+        return FoodResponse.builder()
+            .productId(saved.getProductId())
+            .name(saved.getName())
+            .price(saved.getPrice())
+            .addOns(saved.getAddOns())
+            .isAvailable(saved.getIsAvailable())
+            .description(saved.getDescription())
+            .build();
     }
 
 
@@ -73,7 +82,7 @@ public class FoodService {
         foodModel.setName(request.getName());
         foodModel.setPrice(request.getPrice());
         foodModel.setIsAvailable(request.getIsAvailable());
-        foodModel.setAddOns(request.getAddOns());
+        //foodModel.setAddOns(request.getAddOns());
         foodRepository.save(foodModel);
     }
 
