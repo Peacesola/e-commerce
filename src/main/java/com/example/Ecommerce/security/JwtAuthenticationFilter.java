@@ -1,5 +1,6 @@
 package com.example.Ecommerce.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,19 +30,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         String token = authorizationHeader.substring(7);
-        String email = jwtService.extractUsername(token);
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-        if(jwtService.isTokenValid(token, userDetails)) {
-            UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-                );
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+       try{
+           String email = jwtService.extractUsername(token);
+           UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+           if(jwtService.isTokenValid(token, userDetails)) {
+               UsernamePasswordAuthenticationToken authToken =
+                   new UsernamePasswordAuthenticationToken(
+                       userDetails,
+                       null,
+                       userDetails.getAuthorities()
+                   );
+               SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        }
-        filterChain.doFilter(request, response);
+           }
+           filterChain.doFilter(request, response);
+       } catch (ExpiredJwtException e) {
+          handleAuthError(response, "Token expired");
+       }
 
+    }
+
+
+    private void handleAuthError(HttpServletResponse response, String message) throws IOException {
+        SecurityContextHolder.clearContext();
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+
+        response.getWriter().write("""
+    {
+      "status": 401,
+      "error": "Unauthorized",
+      "message": "%s"
+    }
+    """.formatted(message));
     }
 }
