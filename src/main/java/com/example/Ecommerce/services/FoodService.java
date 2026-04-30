@@ -79,11 +79,11 @@ public class FoodService {
 
     public void updateFoodById(Long id, UpdateFoodRequest request) {
         FoodModel foodModel = getFoodById(id);
-        foodModel.setName(request.getName());
+        //foodModel.setName(request.getName());
         foodModel.setPrice(request.getPrice());
         foodModel.setIsAvailable(request.getIsAvailable());
         foodModel.setDescription(request.getDescription());
-        foodModel.setAddOns(request.getAddOns());
+        //foodModel.setAddOns(request.getAddOns());
         /*if(foodRepository.existsByName(request.getName())){
             throw new ProductAlreadyExistsException("Product already exists");
         }else {
