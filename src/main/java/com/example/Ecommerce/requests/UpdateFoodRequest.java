@@ -16,8 +16,8 @@ import java.util.Map;
 @Setter
 public class UpdateFoodRequest {
     private BigDecimal price;
-    private String name;
+    //private String name;
     private Boolean isAvailable;
-    private Map<String,Integer> addOns= new HashMap<>();
+  //  private Map<String,Integer> addOns= new HashMap<>();
     private String description;
 }
