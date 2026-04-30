@@ -81,7 +81,7 @@ public class FoodService {
         FoodModel foodModel = getFoodById(id);
         //foodModel.setName(request.getName());
         foodModel.setPrice(request.getPrice());
-        foodModel.setIsAvailable(request.getIsAvailable());
+        //foodModel.setIsAvailable(request.getIsAvailable());
         foodModel.setDescription(request.getDescription());
         //foodModel.setAddOns(request.getAddOns());
         /*if(foodRepository.existsByName(request.getName())){
