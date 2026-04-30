@@ -84,10 +84,12 @@ public class FoodService {
         foodModel.setIsAvailable(request.getIsAvailable());
         foodModel.setDescription(request.getDescription());
         foodModel.setAddOns(request.getAddOns());
-        if(foodRepository.existsByName(request.getName())){
+        /*if(foodRepository.existsByName(request.getName())){
             throw new ProductAlreadyExistsException("Product already exists");
-        }
-         foodRepository.save(foodModel);
+        }else {
+
+        }*/
+        foodRepository.save(foodModel);
     }
 
     public Boolean toggleFoodAvailability(Long id){
