@@ -19,7 +19,7 @@ public class JwtService {
         return Jwts.builder()
             .setSubject(email)
             .setIssuedAt(Date.from(Instant.now()))
-            .setExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(5))))
+            .setExpiration(Date.from(Instant.now().plus(Duration.ofMinutes(60))))
             .signWith(Keys.hmacShaKeyFor(JWT_SECRET.getBytes()))
             .compact();
     }
