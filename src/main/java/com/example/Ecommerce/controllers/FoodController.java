@@ -78,7 +78,7 @@ public class FoodController {
     }
 
     @DeleteMapping("deleteFood/{id}")
-    public ResponseEntity<Map<String,Object>> deleteFoodById(@RequestParam Long id){
+    public ResponseEntity<Map<String,Object>> deleteFoodById(@PathVariable Long id){
         foodService.deleteFoodById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
             "status code",HttpStatus.NO_CONTENT.value(),
